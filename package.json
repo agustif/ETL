@@ -1,0 +1,27 @@
+{
+  "name": "etl",
+  "version": "0.0.1",
+  "description": "A simple framework for building ETL Pipelines",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agustif/ETL.git"
+  },
+  "author": "Agusti Fernandez Pardo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agustif/ETL/issues"
+  },
+  "homepage": "https://github.com/agustif/ETL#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.7",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2"
+  }
+}
