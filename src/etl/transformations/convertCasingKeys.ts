@@ -10,18 +10,15 @@ const toCamel = (s: string): string => {
 
 export default function convertCasingKeys(options: ConvertCasingInput): any {
     const { config , data } = options
-    console.log('config;', config)
     const { from, to } = config;
-
-    console.log(from, to)
-    if (config.from === "snake" || "kebab" && config.to === 'camel') {
+    if (from === "snake" || "kebab" && to === 'camel') {
         return data.map((brewery:  any) =>
             Object.keys(brewery).reduce((accumulator: any, currentValue) => {
                 accumulator[toCamel(currentValue)] = brewery[currentValue];
                 return accumulator;
             }, {})
         );
-    } else if (config.to !== "camel") {
+    } else if (to !== "camel") {
         console.error("Only conversion from kebab or snake to camel case implemented.")
     }
     else if (!config) {

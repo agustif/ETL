@@ -1,5 +1,6 @@
 
-export default function removeAttribute(options: RemoveAttributeOptions): any {
+
+export default function addUSRegion(options: RemoveAttributeOptions): any {
     const { config , data } = options
     const {attribute} = config
     if (attribute === 'NULL') {
@@ -10,10 +11,10 @@ export default function removeAttribute(options: RemoveAttributeOptions): any {
         })
     }
     else if (!attribute) {
-        console.error('transformation removeAttribute requires an attribute argument!')
+        console.error('transformation addUSRegion requires an attribute argument!')
     }
     else if (!data) {
-        console.error('transformation removeAttribute requires an extractor to be used first')
+        console.error('transformation addUSRegion requires an extractor to be used first')
     } else {
         return data
     }
