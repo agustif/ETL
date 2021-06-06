@@ -1,31 +1,10 @@
 import { Brewery } from 'etl/types/brewery'
 
-
-const groupByKey = ({data, config}: GroupByOptions) => {
-    const {group} = config
-    return data.reduce((
-        result: any,
-        item
-    ) => ({
-            ...result,
-            [item[group]]: [
-            ...(result[item[group]] || []),
-            item,
-            ],
-        }),
-    {},
-);}
-const orderByValue = ({ data, config }: GroupByOptions) =>
-    data.sort((a, b) => a.createdAt < b.createdAt && 1 || -1)
-
-
 export default function groupBy(options: GroupByOptions): any {
     const { config } = options
     const {group, order, orderBy } = config
-    console.log('group;', group, order, orderBy)
     let { data } = options
     if (orderBy && group) {
-
         // ordering before grouping makes things easier
         data =  orderByValue({data, config})
         data =  groupByKey({data, config})
@@ -45,12 +24,31 @@ export default function groupBy(options: GroupByOptions): any {
     }
     else if (!data) {
         console.error('transformation groupBy requires an extractor to be used first')
-    } else {
-        return data
     }
+    return data
 }
+
+const groupByKey = ({ data, config }: GroupByOptions) =>
+    data.reduce((result: any, accumulator) => {
+        result[accumulator[config.group]] =
+            [...result[accumulator[config.group]]
+                || [], accumulator];
+        return result;
+    }, {})
+
+const orderByValue = ({ data, config }: GroupByOptions): Brewery[] => {
+    const { order, orderBy } = config
+    if (order === OrderOptions.Ascendent )
+        data.sort((a, b) => a[orderBy] < b[orderBy] && 1 || -1)
+    else if (order === OrderOptions.Descendent )
+        data.sort((a, b) => a[orderBy] > b[orderBy] && 1 || -1)
+    return data
+}
+
 export enum GroupOptions{
     State = "state",
+    // we could allow to group by any key that makes sense/is shaed between objects really,
+    // adding it here.
 }
 export enum OrderOptions{
     Ascendent = "asc",
@@ -58,8 +56,10 @@ export enum OrderOptions{
 }
 
 export enum OrderByOptions {
-    CreatedAt = "created_at",
-    UpdatedAt = "updated_at",
+    Id = "id",
+    CreatedAt = "createdAt",
+    UpdatedAt = "updatedAt",
+    PostalCode = "postalCode",
 }
 
 export interface GroupByConfig {
