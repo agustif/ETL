@@ -7,7 +7,7 @@
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/app.ts",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,10 @@
   },
   "homepage": "https://github.com/agustif/ETL#readme",
   "devDependencies": {
+    "@types/jest": "^26.0.23",
     "@types/node-fetch": "^2.5.10",
+    "jest": "^27.0.4",
+    "ts-jest": "^27.0.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^4.3.2"
