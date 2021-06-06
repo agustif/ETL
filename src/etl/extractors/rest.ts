@@ -9,10 +9,6 @@ export default async function restExtractor({endpoint, format}: RestExtractorOpt
             const breweries = await response.json()
             return breweries
         }
-        // if (format === 'PLAIN_TEXT') {
-        //     const breweries = await response.text()
-        //     return breweries
-        // }
         if (!format) {
             console.error('You must provide a format option in restExtractor')
         }
@@ -32,8 +28,6 @@ export default async function restExtractor({endpoint, format}: RestExtractorOpt
 
 export enum Format{
     Json = "JSON",
-    Csv = "CSV",
-    PlainText = "PLAIN_TEXT"
 }
 
 export interface RestExtractorOptions  {

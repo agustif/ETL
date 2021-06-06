@@ -4,9 +4,9 @@ export default function removeAttribute(options: RemoveAttributeOptions): any {
     console.log('attribute;',attribute)
     if (attribute === 'NULL') {
         return data.map(brewery => {
-            const removedNullAttributes = Object.entries(brewery).filter(([key, val]) => val !== null)
-            const removeNulled = Object.fromEntries(removedNullAttributes);
-            return removeNulled
+            const removedNullAttributes = Object.entries(brewery)
+                .filter(([, val]) => val !== null)
+            return Object.fromEntries(removedNullAttributes);
         })
     }
     else if (!attribute) {
@@ -18,11 +18,11 @@ export default function removeAttribute(options: RemoveAttributeOptions): any {
         return data
     }
 }
+
 export enum RemoveOptions{
     Null = "NULL",
     Empty = "EMPTY",
 }
-import { Brewery } from 'etl/types/brewery'
 export interface RemoveAttributeOptions  {
     attribute: RemoveOptions
     data: Object[]
