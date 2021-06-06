@@ -2,10 +2,10 @@
   "name": "etl",
   "version": "0.0.1",
   "description": "A simple framework for building ETL Pipelines",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/app.js",
+  "types": "dist/app.d.ts",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "ts-node -r tsconfig-paths/register src/app.ts",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,8 +20,8 @@
   },
   "homepage": "https://github.com/agustif/ETL#readme",
   "devDependencies": {
-    "nodemon": "^2.0.7",
     "ts-node": "^10.0.0",
+    "tsconfig-paths": "^3.9.0",
     "typescript": "^4.3.2"
   },
   "dependencies": {
