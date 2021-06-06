@@ -7,7 +7,7 @@ const restEndpoint = process.env.BREWERIES_REST_ENDPOINT || 'https://api.openbre
 export default async function BreweriesPipeline() {
     const BreweriesPipeline = (
         await new Pipeline()
-        .restExtractor({ endpoint: restEndpoint, format: Format.Json })
+        .restExtractor({ endpoint: restEndpoint, format: Format.Json, randomCreatedAt: true })
     )
     .removeAttribute({attribute: 'NULL'})
         // Removes any attributes that have null values
