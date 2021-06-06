@@ -11,8 +11,11 @@ An example breweries pipeline is implemented to match the requirements of the co
 
 Project sturcture
 
-src/app.ts   // Contains our express app which responds to the **/berweries** endpoint with running our **BreweriesPipeline**.
-src/etl
+src/app.ts                      // Contains our express app which responds to the **/berweries** endpoint with running our **BreweriesPipeline**.
+src/etl                         // Folder containing all the ETL business logic.
+src/etl/index.ts                // Pipeline Class lives here, need to add any new extractors/transformations/loaders to it.
+src/etl/pipelines/breweries.ts  // Implementation of our breweries pipeline.
+src/etl/extractors/rest.ts // A rest endpoint extractor, handles JSON input/output only for now
 
 
 Class **Pipeline** contains both pipeline result, any available ETL operations, and also a pipelineResult to call when finishing up our Pipeline.
@@ -22,8 +25,6 @@ Have in mind for now **only 1 [one] extractor** can be used at the start of your
 But you could always build a wrapper mainExtractor that calls two subExtractors with the data you need, so you would call the mainExtractor first thing in your pipeline, and then after chaining all the transformations you want, you can either use one or several  loaders to export your data into any stores, databases, endpoints, etc,
 
 **Extractors**
-etl/extractors/rest.ts // A rest endpoint extractor, handles JSON input/output only for now
-
 Do you need other extractors?
 You could build some to read files from either an API endpoint or FileSystem, and parse them accordinlgy as CSV, plaintext, or whatever suits your needs.
 You could also build a WebSocket extractor endpoint if you're getting fancy with real-time data.

@@ -12,7 +12,7 @@ export default function convertCasingKeys(options: ConvertCasingInput): any {
     const { config , data } = options
     const { from, to } = config;
     if (from === "snake" || "kebab" && to === 'camel') {
-        return data.map((brewery:  any) =>
+        return data?.map((brewery:  any) =>
             Object.keys(brewery).reduce((accumulator: any, currentValue) => {
                 accumulator[toCamel(currentValue)] = brewery[currentValue];
                 return accumulator;
