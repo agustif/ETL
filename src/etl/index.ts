@@ -1,32 +1,23 @@
-import restExtractor,{ RestExtractorOptions, Format } from 'etl/extractors/rest'
+import restExtractor, { RestExtractorOptions } from 'etl/extractors/rest'
+import removeAttribute from 'etl/transformations/removeAttribute'
+import { Brewery } from 'etl/types/brewery'
 
 class Pipeline {
-    result: object;
+    result: object[];
     constructor() {
-        this.result = {};
+        this.result = [{}]
       }
       get finish() {
         return this.result;
       }
-    restExtractor = (...args: RestExtractorOptions[]) =>  restExtractor(args[0]);
-    //   sum(...args: any[]) {
-    //     this.result = args.reduce((sum, current) => sum + current, 0);
-    //     return this;
-    //   }
-    //   add(result: number) {
-    //     this.result += result;
-    //     return this;
-    //   }
-    //   subtract(result: number) {
-    //     this.result -= result;
-    //     return this;
-    //   }
-    //   average(...args: any[]) {
-    //     this.result = args.length
-    //       ? (this.sum(...args).result) / args.length
-    //       : undefined;
-    //     return this;
-    //   }
+    async restExtractor(...args: RestExtractorOptions[]) {
+        this.result = await restExtractor(args[0]);
+        return this
+    }
+    removeAttribute(...args: any) {
+        this.result = removeAttribute({ attribute: args[0], data: this.result } );
+        return this
+    }
 }
 
 export { Pipeline }

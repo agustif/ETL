@@ -1,15 +1,42 @@
-export enum  Format{
+import fetch from 'node-fetch';
+import { Brewery } from 'etl/types/brewery'
+
+
+export default async function restExtractor({endpoint, format}: RestExtractorOptions): Promise<Brewery[]> {
+    try {
+        const response = await fetch(endpoint)
+        if (format === 'JSON') {
+            const breweries = await response.json()
+            return breweries
+        }
+        // if (format === 'PLAIN_TEXT') {
+        //     const breweries = await response.text()
+        //     return breweries
+        // }
+        if (!format) {
+            console.error('You must provide a format option in restExtractor')
+        }
+    } catch (error) {
+        if (error.name === 'AbortError') {
+			console.log('request was aborted');
+        }
+        if (error.code === 'ENOTFOUND') {
+			console.log(`Sorry, ${endpoint} is not reachable. Check your internet connection`);
+        }
+        else {
+            console.log(error)
+        }
+    }
+    return JSON.parse('')
+}
+
+export enum Format{
     Json = "JSON",
     Csv = "CSV",
     PlainText = "PLAIN_TEXT"
 }
 
 export interface RestExtractorOptions  {
-    endpoint: String
+    endpoint: string
     format: Format
-}
-export default function restExtractor(options: RestExtractorOptions) {
-    const { endpoint, format } = options
-    console.log(endpoint, options, format)
-
 }
