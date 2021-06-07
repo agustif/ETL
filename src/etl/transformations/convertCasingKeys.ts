@@ -9,10 +9,10 @@ const toCamel = (s: string): string => {
 };
 
 export default function convertCasingKeys(options: ConvertCasingInput): any {
-    const { config , data } = options
+    const { config, data } = options
     const { from, to } = config;
     if (from === "snake" || "kebab" && to === 'camel') {
-        return data?.map((brewery:  any) =>
+        return data?.map((brewery: any) =>
             Object.keys(brewery).reduce((accumulator: any, currentValue) => {
                 accumulator[toCamel(currentValue)] = brewery[currentValue];
                 return accumulator;
@@ -31,19 +31,19 @@ export default function convertCasingKeys(options: ConvertCasingInput): any {
         return data
     }
 }
-enum convertCasingToOptions {
+export enum convertCasingToOptions {
     Camel = "camel"
 }
-enum convertCasingFromOptions {
+export enum convertCasingFromOptions {
     Snake = "snake",
     Kebab = "kebab"
 
 }
-export interface ConfigOptions{
+export interface ConfigOptions {
     from: convertCasingFromOptions
     to: convertCasingToOptions
 }
-export interface ConvertCasingInput  {
+export interface ConvertCasingInput {
     config: ConfigOptions
-    data: Brewery[] | any
+    data: Brewery[]
 }

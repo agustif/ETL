@@ -9,10 +9,11 @@ export interface Brewery  {
     state: string,
     countyProvince: string,
     postalCode: number,
-    longitude: string,
-    latitude: string,
+    longitude: number,
+    latitude: number,
     phone: string,
     websiteUrl: string,
     updatedAt: Date,
     createdAt: Date,
+    USRegion: string,
 }
