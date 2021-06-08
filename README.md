@@ -166,3 +166,7 @@ You could also extract some logic from current transformations,
 
 ### Next steps
  In the future we might separate things into npm-packages so it's easier to make code more modular.
+
+## Thoughts on modularity
+You could probably build pipelines of pipelines,
+using smaller pipelines as other ETL tasks for a bigger one.
