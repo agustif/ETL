@@ -127,6 +127,7 @@ Have in mind for now **only 1 [one] extractor** can be used at the start of your
 
 But you could always build a wrapper mainExtractor that calls two subExtractors with the data you need, so you would call the mainExtractor first thing in your pipeline, and then after chaining all the transformations you want, you can either use one or several loaders to export your data into any stores, databases, endpoints, etc,
 
+
 **Extractors**
 
 Do you need other extractors?
@@ -135,6 +136,13 @@ You could build some to read files from either an API endpoint or FileSystem, an
 
 You could also build a WebSocket extractor endpoint if you're getting fancy with real-time data.
 
+**Transformations**
+You can use several transformations after your extractor,
+they can modify and shape the data as you please,
+but you always need to return this and add your modifications to the results,
+so it's available to the next transformation if available,
+or to the finished call to show the final results.
+
 **Loaders**
 
 No real loaders where implemented, in our case, you could save the JSON as a file to the FS, or insert into a local or external database, or do N things with your pipeline data.
@@ -142,3 +150,18 @@ No real loaders where implemented, in our case, you could save the JSON as a fil
 You can also finish your pipeline by calling **YourPipeline.pipelineResult** and get the pipelines data as a JSON object.
 
 Which is what we do, and then serve that JSON as our API response in our case.
+
+
+### Extending it to suit your needs.
+If you want to add a new extractor/transformation/loader,
+create either a file or folder containing all
+ your related code in one of the available subfolders.
+Wire it to main Pipeline class so it's available for your new pipeline,
+and create a new pipeline in pipelines folder,
+you can take a look at the breweries one as an example.
+
+You could also extract some logic from current transformations,
+ or expand them to suit your needs.
+
+### Next steps
+ In the future we might separate things into npm-packages so it's easier to make code more modular.
