@@ -153,7 +153,8 @@ Which is what we do, and then serve that JSON as our API response in our case.
 
 
 ### Extending it to suit your needs.
-If you want to add a new extractor/transformation/loader,
+If you want to create a new pipeline or
+add a new extractor/transformation/loader,
 create either a file or folder containing all
  your related code in one of the available subfolders.
 Wire it to main Pipeline class so it's available for your new pipeline,
