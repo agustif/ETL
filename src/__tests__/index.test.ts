@@ -1,21 +1,46 @@
-export const sum
-= (...a: number[]) =>
-  a.reduce((acc, val) => acc + val, 0);
-// A simple foo.test.ts:
-// import { sum } from '../foo';
+import server, { app } from '../app'
+// import supertest from 'supertest'
+import supertest from 'supertest'
 
-test('basic', () => {
-expect(sum()).toBe(0);
-});
+const request = supertest(app)
 
-test('basic again', () => {
-expect(sum(1, 2)).toBe(3);
-});
+// jest.setTimeout(10000)
+afterEach(async () => await server.close())
 
-test('basic',async () => {
-  expect(sum()).toBe(0);
-});
+describe('GET /breweries endpoint', () => {
+  it('returns 401 Unauthorized without valid token provided', async () => {
+    const response = await request.get('/breweries');
 
-test('basic again', async () => {
-  expect(sum(1, 2)).toBe(3);
-}, 1000 /* optional timeout */);
+    expect(response.status).toBe(401)
+    expect(response.text).toBe('Unauthorized')
+  })
+
+
+  it('returns BreweriesPipeline results as JSON when provided valid token', async () => {
+    const getToken = await request.post('/token');
+    const { token } = getToken.body
+    console.log('token:', token)
+    const response = await request.get('/breweries')
+      .set('Authorization', `Bearer ${token}`)
+    // console.log(response)
+
+    expect(response.status).toBe(200)
+    expect(response.text).toBeDefined
+  })
+
+})
+
+describe('POST /token endpoint', () => {
+  it('returns a 404 if using GET instead of POST', async () => {
+    const response = await request.get('/token');
+
+    expect(response.status).toBe(404)
+    expect(response.text).toContain('Cannot GET /token')
+  })
+  it('returns a valid token for auth', async () => {
+    const response = await request.post('/token');
+    const token = response.text
+    expect(response.status).toBe(200)
+    expect(token).toBeDefined
+  })
+})

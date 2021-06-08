@@ -9,4 +9,7 @@ module.exports = {
     "transform": {
         "^.+\\.(ts|tsx)$": "ts-jest"
     },
+    "moduleNameMapper": {
+        "etl/(.*)": "<rootDir>/src/etl",
+    },
 }

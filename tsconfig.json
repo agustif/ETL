@@ -26,6 +26,8 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "noPropertyAccessFromIndexSignature": true,
+    "allowSyntheticDefaultImports": true,
+    // "esModuleInterop": true,
     "baseUrl": "./src",
     "paths": {
       "etl/*": [
