@@ -4,7 +4,6 @@ import { BreweriesPipeline } from './etl/pipelines/breweries'
 import './middleware/auth'
 import { genToken } from './middleware/auth'
 
-// import { Brewery } from './etl/types/brewery'
 const app = express()
 const port = process.env['PORT'] || 3000
 
@@ -15,7 +14,8 @@ app.post('/token', async function (_, res) {
 })
 
 app.get('/breweries', passport.authenticate('jwt', { session: false }), async (_, res) => {
-  // This terniary op here is a dirty hack, I would need to fix it in jest/ts/config to handle this better.
+  // This terniary op here is a dirty hack,
+  // I need to fix it in jest / ts / config to handle this better.
   const breweries =
     process.env['NODE_ENV'] === 'test'
       ? await BreweriesPipeline

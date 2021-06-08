@@ -1,2 +1,6 @@
 # No real loaders implemented for now.
 Make one!
+Good candidates
+- saveToFileSystem(as{JSON|CSV|TXT})
+- insertToDatabase
+- post to api endpoint

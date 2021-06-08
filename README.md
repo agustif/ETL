@@ -92,11 +92,29 @@ An example breweries pipeline is implemented to match the requirements of the co
 #### Project sturcture
 
 ```
-src/app.ts                      // Contains our express app which responds to the **/berweries** endpoint with running our **BreweriesPipeline**.
-src/etl                         // Folder containing all the ETL business logic.
-src/etl/index.ts                // Pipeline Class lives here, need to add any new extractors/transformations/loaders to it.
-src/etl/pipelines/breweries.ts  // Implementation of our breweries pipeline.
-src/etl/extractors/rest.ts      // A rest endpoint extractor, handles JSON input/output only for now
+├── __tests__
+│   └── breweries.test.ts
+├── app.ts                // Contains our express app which responds to /berweries
+├── etl
+│   ├── index.ts          // Pipeline Class lives here, need to add any new extractors/transformations/loaders to it.
+│   ├── extractors
+│   │   └── rest.ts       // A rest endpoint extractor, handles JSON input/output only for now
+│   ├── loaders
+│   ├── pipelines
+│   │   └── breweries.ts  // Implementation of our breweries pipeline.
+│   ├── transformations
+│   │   ├── addUSRegion                     // addUSRegion transformation, adds Region from lat/long data, filters breweries if !lat,long
+│   │   │   ├── addUSRegionFromLatLong.ts   // function that finds if a [lat, long] point is inside a US Region polygon.
+│   │   │   ├── data
+│   │   │   │   └── us_regions.json         // GeoJSON data of USRegions, doesn't include non-continental US
+│   │   │   └── index.ts                    // addUSRegion() transformation implementation, calls addUSRegionFromLatLong()
+│   │   ├── convertCasingKeys.ts            // convertCasingKeys() transformation, converts casing in object's keys from snake or kebab to camel case
+│   │   ├── groupBy.ts                      // groupBy() transformation, groups records by attribute, order's before grouping too.
+│   │   └── removeAttribute.ts              // removeAttribute(), removes any attribute matched, in this case used for when values contain NULL.
+│   └── types
+│       └── brewery.ts                      // Our brewery type, used to ensure data consistency and for better DX
+└── middleware
+    └── auth.ts                             // passport and passport-jwt authentication middleware
 ```
 
 ##### Pipeline

@@ -1,10 +1,7 @@
-import server, { app } from '../app'
-// import supertest from 'supertest'
 import supertest from 'supertest'
-
+import server, { app } from '../app'
 const request = supertest(app)
 
-// jest.setTimeout(10000)
 afterEach(async () => await server.close())
 
 describe('GET /breweries endpoint', () => {
@@ -14,7 +11,6 @@ describe('GET /breweries endpoint', () => {
     expect(response.status).toBe(401)
     expect(response.text).toBe('Unauthorized')
   })
-
 
   it('returns BreweriesPipeline results as JSON when provided valid token', async () => {
     const getToken = await request.post('/token');
