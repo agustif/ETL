@@ -2,7 +2,7 @@ import express from 'express';
 import passport from 'passport'
 import jwt from 'jsonwebtoken'
 import BreweriesPipeline from "etl/pipelines/breweries"
-import 'middlewares/passport'
+import 'middleware/auth'
 
 const app = express();
 const port = 3000;
@@ -17,20 +17,20 @@ const genToken = () => {
 }
 
 app.post('/register', async function (_, res) {
-//   // Generate JWT token
+  //   // Generate JWT token
   const token = genToken()
-  res.status(200).json({token})
+  res.status(200).json({ token })
 });
 
-app.get('/breweries', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/breweries', passport.authenticate('jwt', { session: false }), async (_, res) => {
   const breweries = await BreweriesPipeline()
   res.send(breweries);
 });
 
-app.get('/', async (req, res) => {
+app.get('/', async (_, res) => {
   res.send('You probably want to check <a href="/breweries">/breweries</a>');
 });
 
 app.listen(port, () => {
-    return console.log(`[pipeline]: breweries running on  http://localhost:${port}/breweries`);
+  return console.log(`[pipeline]: breweries running on  http://localhost:${port}/breweries`);
 });

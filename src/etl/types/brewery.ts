@@ -1,4 +1,4 @@
-export interface Brewery  {
+export interface Brewery {
     group: any;
     id: number,
     obdbId: string,

@@ -4,7 +4,7 @@ import { RemoveOptions } from 'etl/transformations/removeAttribute'
 import { convertCasingFromOptions, convertCasingToOptions } from 'etl/transformations/convertCasingKeys'
 import { ifEmptyOrNullOptions } from 'etl/transformations/addUSRegion'
 import { GroupOptions, OrderByOptions, OrderOptions } from 'etl/transformations/groupBy'
-const restEndpoint = process.env.BREWERIES_REST_ENDPOINT || 'https://api.openbrewerydb.org/breweries'
+const restEndpoint = process.env['BREWERIES_REST_ENDPOINT'] || 'https://api.openbrewerydb.org/breweries'
 
 export default async function BreweriesPipeline() {
     const BreweriesPipeline = (

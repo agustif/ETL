@@ -2,11 +2,11 @@ import fetch from 'node-fetch';
 import { Brewery } from 'etl/types/brewery'
 
 const randomDate = (start: Date, end: Date): string => {
-    let date =  new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    let date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
     return date.toISOString()
 }
 
-export default async function restExtractor({endpoint, format, randomCreatedAt = false}: RestExtractorOptions): Promise<Brewery[]> {
+export default async function restExtractor({ endpoint, format, randomCreatedAt = false }: RestExtractorOptions): Promise<Brewery[]> {
     try {
         const response = await fetch(endpoint)
         if (format === 'JSON') {
@@ -22,10 +22,10 @@ export default async function restExtractor({endpoint, format, randomCreatedAt =
         }
     } catch (error) {
         if (error.name === 'AbortError') {
-			console.log('request was aborted');
+            console.log('request was aborted');
         }
         if (error.code === 'ENOTFOUND') {
-			console.log(`Sorry, ${endpoint} is not reachable. Check your internet connection`);
+            console.log(`Sorry, ${endpoint} is not reachable. Check your internet connection`);
         }
         else {
             console.log(error)
@@ -34,11 +34,11 @@ export default async function restExtractor({endpoint, format, randomCreatedAt =
     return JSON.parse('')
 }
 
-export enum Format{
+export enum Format {
     Json = "JSON",
 }
 
-export interface RestExtractorOptions  {
+export interface RestExtractorOptions {
     endpoint: string
     randomCreatedAt: boolean
     format: Format

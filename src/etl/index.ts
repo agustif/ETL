@@ -14,23 +14,24 @@ class Pipeline {
         return this.result;
     }
     async restExtractor(...args: RestExtractorOptions[]) {
-        this.result =  await restExtractor(args[0]);
+        if (!args)
+            this.result = await restExtractor(args[0]);
         return this
     }
     removeAttribute(...args: any) {
-        this.result = removeAttribute({ config: args[0], data: this.result } );
+        this.result = removeAttribute({ config: args[0], data: this.result });
         return this
     }
     convertCasingKeys(...args: any) {
-        this.result = convertCasingKeys({ config: args[0], data: this.result } );
+        this.result = convertCasingKeys({ config: args[0], data: this.result });
         return this
     }
     groupBy(...args: any) {
-        this.result = groupBy({ config: args[0], data: this.result } );
+        this.result = groupBy({ config: args[0], data: this.result });
         return this
     }
     addUSRegion(...args: any) {
-        this.result = addUSRegion({ config: args[0], data: this.result } );
+        this.result = addUSRegion({ config: args[0], data: this.result });
         return this
     }
 }
