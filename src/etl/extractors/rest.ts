@@ -13,7 +13,7 @@ export default async function restExtractor({
 }: RestExtractorOptions): Promise<Brewery[]> {
   try {
     const response = await fetch(endpoint)
-    if (format === 'JSON') {
+    if (format === Format.Json) {
       const breweries = await response.json()
       // randomizing createdAt attribute in order to make it easier to test for ordering it.
       if (randomCreatedAt)
