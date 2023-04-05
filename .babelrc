@@ -1,0 +1,10 @@
+// Using babel instead of typescript for compiling until pipeline operator TC39 proposal is available directly.
+{
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-typescript"
+  ],
+  "plugins": [
+    ["@babel/plugin-proposal-pipeline-operator", {"proposal": "hack", "topicToken": "%" }]
+  ]
+}

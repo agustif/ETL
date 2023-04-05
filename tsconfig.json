@@ -27,15 +27,14 @@
     "noUncheckedIndexedAccess": true,
     "noPropertyAccessFromIndexSignature": true,
     "allowSyntheticDefaultImports": true,
-    // "esModuleInterop": true,
-    "baseUrl": "./src",
-    "paths": {
-      "etl/*": [
-        "./etl/*"
-      ]
-    },
     "esModuleInterop": true,
+    "baseUrl": "./src",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/__tests__",
+    "src/etl/pipelines"]
 }

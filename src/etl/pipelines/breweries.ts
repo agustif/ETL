@@ -1,32 +1,43 @@
-import { Pipeline } from 'etl/index'
-import { Format } from 'etl/extractors/rest'
-import { RemoveOptions } from 'etl/transformations/removeAttribute'
-import { convertCasingFromOptions, convertCasingToOptions } from 'etl/transformations/convertCasingKeys'
-import { ifEmptyOrNullOptions } from 'etl/transformations/addUSRegion'
-import { GroupOptions, OrderByOptions, OrderOptions } from 'etl/transformations/groupBy'
-import { Brewery } from 'etl/types/brewery'
-
+import {removeAttribute, RemoveOptions } from '../transformations/removeAttribute';
+import { convertCasingKeys, convertCasingFromOptions, convertCasingToOptions } from '../transformations/convertCasing/convertCasingKeys';
+import restExtractor, { Format } from '../extractors/rest/restExtractor';
+import { Pipeline } from '../index';
+import { addUSRegion, ifEmptyOrNullOptions } from '../transformations/addUSRegion';
+import groupBy, { GroupOptions, OrderByOptions, OrderOptions } from '../transformations/groupBy';
 
 export async function BreweriesPipeline(): Promise<Brewery[]> {
-    const restEndpoint = 'https://api.openbrewerydb.org/breweries'
-    const BreweriesPipeline = (
-        await new Pipeline().restExtractor({
-            endpoint: restEndpoint,
-            format: Format.Json,
-            randomCreatedAt: true
-        })
-    )
-        .removeAttribute({ attribute: RemoveOptions.Null })
-        // Removes any attributes that have null values
-        .convertCasingKeys({ from: convertCasingFromOptions.Snake, to: convertCasingToOptions.Camel })
-        // Could be expanded to Convert (keys|values|both) casing from snake to camel case.
-        .addUSRegion({
-            input: { lat: 'latitude', long: 'longitude' },
-            ifEmptyOrNullLatLong: ifEmptyOrNullOptions.Remove
-        })
-        // Adds a new attribute region calculated from lat/long attributes. Removes anynulllat/long
-        .groupBy({ group: GroupOptions.State, orderBy: OrderByOptions.CreatedAt, order: OrderOptions.Ascendent })
-    // groups all entries by state atrribute, and sorts inside each state by created_at, ascending order, so most recent ones are shown.
-    return await BreweriesPipeline.finished
-    // needed to call after chaining extractors/transformations into our Pipeline to return it's final results!
+  const restEndpoint = 'https://api.openbrewerydb.org/breweries';
+
+  const initialPipeline = Pipeline.create<Brewery>();
+
+  const BreweriesPipeline = await initialPipeline
+    |> restExtractor({
+      endpoint: restEndpoint,
+      format: Format.Json,
+    }, %)
+    |> removeAttribute({ attribute: RemoveOptions.Null }, %)
+    |> convertCasingKeys({ from: convertCasingFromOptions.Snake, to: convertCasingToOptions.Camel }, %)
+    // FIXME: |> addUSRegion({ input: { lat: 'latitude', long: 'longitude' }, ifEmptyOrNullLatLong: ifEmptyOrNullOptions.Remove }, %)
+    |> groupBy(GroupOptions.State, OrderByOptions.CreatedAt, OrderOptions.Ascendent, %)
+
+    return await BreweriesPipeline.finished;
+}
+
+export interface Brewery {
+  id: number
+  obdbId: string
+  name: string
+  breweryType: string // enum candidate
+  street: string
+  city: string
+  state: string
+  countyProvince: string
+  postalCode: number
+  longitude: number
+  latitude: number
+  phone: string
+  websiteUrl: string
+  updatedAt: Date
+  createdAt: Date
+  USRegion: string
 }

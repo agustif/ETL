@@ -1,5 +1,5 @@
 import supertest from 'supertest'
-import server, { app } from '../app'
+import server, { app } from '../../app'
 const request = supertest(app)
 
 afterEach(async () => await server.close())

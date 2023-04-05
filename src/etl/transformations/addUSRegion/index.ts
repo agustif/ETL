@@ -1,41 +1,40 @@
-import { Brewery } from 'etl/types/brewery'
-import { addUSRegionFromLatLong } from 'etl/transformations/addUSRegion/addUSRegionFromLatLong'
+import { addUSRegionFromLatLong } from './addUSRegionFromLatLong';
 
-export default function addUSRegion(options: AddUSRegionOptions): any {
-  const { config } = options
-  const { input, ifEmptyOrNullLatLong } = config
-  const { lat, long } = input
-  let { data } = options
-  if (ifEmptyOrNullLatLong === ifEmptyOrNullOptions.Remove) {
-    data = data.filter((b: Brewery) => Object.keys(b).includes(lat) && Object.keys(b).includes(long))
+export function addUSRegion<T extends Record<string, any>>(options: AddUSRegionOptions<T>): T[] {
+  const { config: { lat, long, ifEmptyOrNullLatLong }, data } = options;
+
+  const filteredData = ifEmptyOrNullLatLong === ifEmptyOrNullOptions.Remove
+    ? data.filter((item) => lat in item && long in item && item[lat] !== null && item[long] !== null)
+    : data;
+
+  if (!(lat in filteredData[0]) || !(long in filteredData[0])) {
+    console.error('transformation addUSRegion requires an input with lat long config argument!');
+    return data;
   }
-  if (input && data) {
-    data.map((brewery: Brewery) => {
-      const { latitude, longitude } = brewery
-      brewery.USRegion = addUSRegionFromLatLong(Number(latitude), Number(longitude))
-    })
-  } else if (!input) {
-    console.error('transformation addUSRegion requires an input with lat long config argument!')
-  } else if (!data) {
-    console.error('transformation addUSRegion requires an extractor to be used first')
-  }
-  return data
-}
-export interface AddUSRegionInputOptions {
-  lat: string
-  long: string
+
+  filteredData.forEach((item) => {
+    const { [lat]: latitude, [long]: longitude, ...rest } = item;
+    if (latitude !== null && longitude !== null) {
+      item.USRegion = addUSRegionFromLatLong(Number(latitude), Number(longitude));
+    }
+    Object.assign(item, rest);
+  });
+
+  return filteredData;
 }
 
 export enum ifEmptyOrNullOptions {
   Remove = 'remove',
-  Keep = 'keep'
-}
-export interface AddUSRegionConfig {
-  input: AddUSRegionInputOptions
-  ifEmptyOrNullLatLong?: ifEmptyOrNullOptions
+  Keep = 'keep',
 }
 
-export interface AddUSRegionOptions {
-  config: AddUSRegionConfig
-  data: Brewery[]
+export interface AddUSRegionConfig {
+  lat: string;
+  long: string;
+  ifEmptyOrNullLatLong?: ifEmptyOrNullOptions;
+}
+
+export interface AddUSRegionOptions<T extends Record<string, any>> {
+  config: AddUSRegionConfig;
+  data: T[];
 }

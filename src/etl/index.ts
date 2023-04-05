@@ -1,38 +1,20 @@
-import restExtractor, { RestExtractorOptions } from 'etl/extractors/rest'
-import removeAttribute from 'etl/transformations/removeAttribute'
-import convertCasingKeys from 'etl/transformations/convertCasingKeys'
-import groupBy from 'etl/transformations/groupBy'
-import addUSRegion from 'etl/transformations/addUSRegion'
+import restExtractor, { RestExtractorOptions } from './extractors/rest/restExtractor'
+import removeAttribute from './transformations/removeAttribute'
+import {convertCasingKeys} from './transformations/convertCasing/convertCasingKeys'
+import groupBy from './transformations/groupBy'
+import addUSRegion from './transformations/addUSRegion'
 
-import { Brewery } from 'etl/types/brewery'
-class Pipeline {
-  result: Brewery[]
-  constructor() {
-    this.result = []
+class Pipeline<T> {
+  private result: T[];
+
+  static create<T>(): Pipeline<T> {
+    return new Pipeline<T>();
   }
-  get finished() {
-    return this.result
+
+  get finished(): Promise<Brewery[]> {
+    return Promise.resolve(this.result);
   }
-  async restExtractor(...args: RestExtractorOptions[]) {
-    if (!args) this.result = await restExtractor(args[0])
-    return this
-  }
-  removeAttribute(...args: any) {
-    this.result = removeAttribute({ config: args[0], data: this.result })
-    return this
-  }
-  convertCasingKeys(...args: any) {
-    this.result = convertCasingKeys({ config: args[0], data: this.result })
-    return this
-  }
-  groupBy(...args: any) {
-    this.result = groupBy({ config: args[0], data: this.result })
-    return this
-  }
-  addUSRegion(...args: any) {
-    this.result = addUSRegion({ config: args[0], data: this.result })
-    return this
-  }
+
 }
 
-export { Pipeline }
+export { Pipeline };
